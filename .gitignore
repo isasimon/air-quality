@@ -1,0 +1,6 @@
+.idea
+src/interfaces/__pycache__
+src/services/__pycache__
+src/services/repository/__pycache__
+src/usecases/__pycache__
+venv
