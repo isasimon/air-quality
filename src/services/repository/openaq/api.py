@@ -16,9 +16,6 @@ class AirQualityBdd(AirQualityRepositoryInterface):
                           params=params).json()
         return aq
 
-    def fetch_by_coordinates(self, date, x, y, z):
-        return "Date: {}. Coordinates: {}, {}, {}".format(date, x, y, z)
-
     def date_from(self, date_to):
         delta = timedelta(days=1)
         datetime_to = datetime.strptime(date_to, '%Y-%m-%d')
