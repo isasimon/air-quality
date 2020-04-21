@@ -1,7 +1,7 @@
 import abc
 
 
-class AirQualiryRepositoryInterface(metaclass=abc.ABCMeta):
+class AirQualityRepositoryInterface(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'fetch_by_city') and
