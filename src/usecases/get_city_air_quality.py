@@ -1,9 +1,11 @@
-from interfaces.air_quality_repository_interface import AirQualityRepositoryInterface
+from class_configuration import ClassConfiguration
 
 
 class GetCityAirQuality:
-    def __init__(self, air_quality_repo: AirQualityRepositoryInterface):
-        self.repo = air_quality_repo
+    def __init__(self, configuration: ClassConfiguration):
+        self.repo = configuration.REPOSITORY.value
+        self.transform = configuration.TRANSFORM.value
 
     def get_city_air_quality(self, date, city):
-        return self.repo.fetch_by_city(date, city)
+        data = self.repo.fetch_by_city(date, city)
+        return self.transform.parse_source(data)

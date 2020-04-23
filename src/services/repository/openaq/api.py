@@ -6,7 +6,7 @@ from .endpoints import OpenAqEndpoints
 from .params import OpenAqParams
 
 
-class AirQualityBdd(AirQualityRepositoryInterface):
+class AirQualityApi(AirQualityRepositoryInterface):
     def fetch_by_city(self, date_to, city):
         date_from = self.date_from(date_to)
         params = {OpenAqParams.CITY.value: city,
@@ -16,7 +16,8 @@ class AirQualityBdd(AirQualityRepositoryInterface):
                           params=params).json()
         return aq
 
-    def date_from(self, date_to):
+    @staticmethod
+    def date_from(date_to):
         delta = timedelta(days=1)
         datetime_to = datetime.strptime(date_to, '%Y-%m-%d')
         datetime_from = datetime_to - delta

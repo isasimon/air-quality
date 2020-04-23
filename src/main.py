@@ -1,13 +1,11 @@
 from usecases.get_city_air_quality import GetCityAirQuality
-from services.repository.openaq.api import AirQualityBdd
-import json
+from class_configuration import ClassConfiguration
 
 
 def main():
-    repository = AirQualityBdd()
-    get_city_aq = GetCityAirQuality(repository)
-    metrics = get_city_aq.get_city_air_quality("2020-03-02", "London")
-    print(json.dumps(metrics, indent=2))
+    get_city_aq = GetCityAirQuality(ClassConfiguration)
+    metrics = get_city_aq.get_city_air_quality("2020-03-02", "Madrid")
+    print(metrics)
 
 
 if __name__== "__main__" :
