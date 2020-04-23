@@ -1,6 +1,7 @@
 from interfaces.air_quality_repository_interface \
     import AirQualityRepositoryInterface
 import requests
+import json
 from datetime import datetime, timedelta
 from .endpoints import OpenAqEndpoints
 from .params import OpenAqParams
@@ -14,7 +15,7 @@ class AirQualityApi(AirQualityRepositoryInterface):
                   OpenAqParams.TO.value: date_to}
         aq = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
                           params=params).json()
-        return aq
+        return self.parse_source(aq)
 
     @staticmethod
     def date_from(date_to):
@@ -22,3 +23,15 @@ class AirQualityApi(AirQualityRepositoryInterface):
         datetime_to = datetime.strptime(date_to, '%Y-%m-%d')
         datetime_from = datetime_to - delta
         return datetime_from.strftime('%Y-%m-%d')
+
+    @staticmethod
+    def parse_source(source):
+        return json.dumps(source, indent=2)
+
+    def format_data(self, data):
+        pass
+
+    def insert_field(self, obj, field):
+        pass
+
+
