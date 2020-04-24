@@ -1,7 +1,23 @@
 from enum import Enum
 
 
-class OpenAqParams(Enum):
+class OpenAqRequestParams(Enum):
     CITY = 'city'
     FROM = 'date_from'
     TO = 'date_to'
+
+
+class OpenAqDataFields(Enum):
+    RESULTS = 'results'
+    PARAMETER = 'parameter'
+    DATE = 'date'
+    CITY = 'city'
+    VALUE = 'value'
+    COORDINATES = 'coordinates'
+    COUNTRY = 'country'
+    LEVEL = 'level'
+
+
+class OpenAqDataFormat(Enum):
+    DATE_TO = '%Y-%m-%d'
+    DATE_FROM = '%Y-%m-%d'
