@@ -18,6 +18,6 @@ class OpenAqDataFields(Enum):
     LEVEL = 'level'
 
 
-class OpenAqDataFormat(Enum):
+class OpenAqDateFormat(Enum):
     DATE_TO = '%Y-%m-%d'
     DATE_FROM = '%Y-%m-%d'

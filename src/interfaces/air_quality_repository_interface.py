@@ -8,7 +8,7 @@ class AirQualityRepositoryInterface(metaclass=abc.ABCMeta):
                 callable(subclass.fetch_by_city) and
                 hasattr(subclass, 'fetch_by_coordinates'))
 
-    def fetch_by_city(self, date, city):
+    def fetch_by_city(self, date_from, date_to, city):
         pass
 
     def fetch_by_coordinates(self, date, x, y, z):

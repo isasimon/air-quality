@@ -6,7 +6,7 @@ import json
 def main():
     config = ClassConfiguration()
     get_city_aq = GetCityAirQuality(config)
-    metrics = get_city_aq.get_city_air_quality("2020-03-02", "Madrid")
+    metrics = get_city_aq.get_city_air_quality("2020-03-01", "2020-03-30", "Madrid")
     print(json.dumps(metrics, indent=2))
 
 

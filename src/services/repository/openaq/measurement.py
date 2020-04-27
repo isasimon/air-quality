@@ -1,4 +1,8 @@
-class MeasurementLevels:
+from functools import reduce
+from .params import OpenAqDataFields
+
+
+class Measurement:
     def __init__(self):
         good = ('good', range(50))
         moderate = ('moderate', range(51, 100))
@@ -20,5 +24,11 @@ class MeasurementLevels:
         else:
             level = 'hazardous'
         return level
+
+    @staticmethod
+    def calculate_mean(data_list):
+        s = reduce(lambda x, y: x + y[OpenAqDataFields.PARAMETER.value],
+                   data_list, 0)
+        return s / len(data_list)
 
 
