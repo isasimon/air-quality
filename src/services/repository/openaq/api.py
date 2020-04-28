@@ -4,27 +4,29 @@ import requests
 from itertools import groupby
 from .endpoints import OpenAqEndpoints
 from .params import OpenAqRequestParams, OpenAqDataFields
-from .measurement import Measurement
+from .operations.aggregations import Aggregations
+from .operations.mappings import Mappings
 
 
 class AirQualityApi(AirQualityRepositoryInterface):
     def fetch_by_city(self, date_from, date_to, city):
-        m = Measurement()
-        aq = self.fetch_from_source(date_from, date_to, city)
-        temp_data = self.get_field(aq,
+        aggs = Aggregations()
+        mappings = Mappings()
+        result = []
+        aq_raw = self.fetch_from_source(date_from, date_to, city)
+        temp_data = self.get_field(aq_raw,
                                    OpenAqDataFields.RESULTS.value)
         groups = groupby(temp_data,
                          key=lambda d: d[OpenAqDataFields.COORDINATES.value])
-        els = []
         for x, y in groups:
             y_list = list(y)
-            mean = m.calculate_mean(y_list)
-            level = m.calculate_level(mean)
+            mean = aggs.calculate_mean(y_list)
+            level = mappings.get_pollution_level(mean)
             el = y_list.pop(0)
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
             self.insert_field(el, OpenAqDataFields.LEVEL.value, level)
-            els.append(el)
-        return els
+            result.append(el)
+        return result
 
     @staticmethod
     def fetch_from_source(date_from, date_to, city):

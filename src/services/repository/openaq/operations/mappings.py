@@ -1,8 +1,4 @@
-from functools import reduce
-from .params import OpenAqDataFields
-
-
-class Measurement:
+class Mappings:
     def __init__(self):
         good = ('good', range(50))
         moderate = ('moderate', range(51, 100))
@@ -16,7 +12,7 @@ class Measurement:
                        unhealthy,
                        very_unhealthy]
 
-    def calculate_level(self, measurement):
+    def get_pollution_level(self, measurement):
         is_in = lambda x: measurement in x[1]
         if measurement <= 300:
             result = map(is_in, self.levels)
@@ -25,8 +21,3 @@ class Measurement:
             level = 'hazardous'
         return level
 
-    @staticmethod
-    def calculate_mean(data_list):
-        s = reduce(lambda x, y: x + y[OpenAqDataFields.VALUE.value],
-                   data_list, 0.0)
-        return s / len(data_list)
