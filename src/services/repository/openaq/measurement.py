@@ -27,8 +27,6 @@ class Measurement:
 
     @staticmethod
     def calculate_mean(data_list):
-        s = reduce(lambda x, y: x + y[OpenAqDataFields.PARAMETER.value],
-                   data_list, 0)
+        s = reduce(lambda x, y: x + y[OpenAqDataFields.VALUE.value],
+                   data_list, 0.0)
         return s / len(data_list)
-
-

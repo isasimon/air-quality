@@ -16,6 +16,7 @@ class OpenAqDataFields(Enum):
     COORDINATES = 'coordinates'
     COUNTRY = 'country'
     LEVEL = 'level'
+    MEAN = 'mean'
 
 
 class OpenAqDateFormat(Enum):
