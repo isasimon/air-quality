@@ -7,3 +7,4 @@ src/services/repository/openaq/__pycache__
 src/services/transformation/__pycache__
 src/usecases/__pycache__
 venv
+data

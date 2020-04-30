@@ -7,7 +7,9 @@ def main():
     repo = RepositoryBeans.API.value
     get_city_aq = GetCityAirQuality(repo)
     metrics = get_city_aq.get_city_air_quality("2020-03-01", "2020-03-30", "Madrid")
-    print(json.dumps(metrics, indent=2))
+    f = open("../data/openapiq.geojson", "w")
+    f.write(json.dumps(metrics, indent=2))
+    f.close()
 
 
 if __name__ == "__main__" :
