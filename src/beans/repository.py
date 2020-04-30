@@ -1,5 +1,5 @@
 from enum import Enum
-from .openaq.api import AirQualityApi
+from services.repository.api.openaq.adapter import AirQualityApi
 
 
 class RepositoryBeans(Enum):

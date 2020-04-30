@@ -3,10 +3,10 @@ from interfaces.air_quality_repository_interface \
 import requests
 from copy import deepcopy
 from itertools import groupby
-from .endpoints import OpenAqEndpoints
+from ..endpoints import OpenAqEndpoints
 from .params import OpenAqRequestParams, OpenAqDataFields, \
     Skeletons, GeoJsonKeys
-from ...operations.beans import OperationsBeans
+from beans.operations import OperationsBeans
 
 
 class AirQualityApi(AirQualityRepositoryInterface):
@@ -15,9 +15,24 @@ class AirQualityApi(AirQualityRepositoryInterface):
         self.aggs = OperationsBeans.AGGREGATIONS.value
 
     def fetch_by_city(self, date_from, date_to, city):
+        params = {OpenAqRequestParams.CITY.value: city,
+                  OpenAqRequestParams.FROM.value: date_from,
+                  OpenAqRequestParams.TO.value: date_to}
+        raw_data = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
+                                params=params).json()
+        return self.generate_geojson(raw_data)
+
+    def fetch_by_country(self, date_from, date_to, country):
+        params = {OpenAqRequestParams.COUNTRY.value: country,
+                  OpenAqRequestParams.FROM.value: date_from,
+                  OpenAqRequestParams.TO.value: date_to}
+        raw_data = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
+                                params=params).json()
+        return self.generate_geojson(raw_data)
+
+    def generate_geojson(self, raw_data):
         result = deepcopy(Skeletons.GEOJSONPARENT.value)
-        aq_raw = self.fetch_from_source(date_from, date_to, city)
-        temp_data = self.get_field(aq_raw,
+        temp_data = self.get_field(raw_data,
                                    OpenAqDataFields.RESULTS.value)
         groups = groupby(temp_data,
                          key=lambda d: (d[OpenAqDataFields.COORDINATES.value],
@@ -29,17 +44,9 @@ class AirQualityApi(AirQualityRepositoryInterface):
             el = y_list.pop(0)
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
             self.insert_field(el, OpenAqDataFields.LEVEL.value, level)
-            result.get(GeoJsonKeys.FEATURES.value)\
+            result.get(GeoJsonKeys.FEATURES.value) \
                 .append(self.to_geojson_feature(el))
         return result
-
-    @staticmethod
-    def fetch_from_source(date_from, date_to, city):
-        params = {OpenAqRequestParams.CITY.value: city,
-                  OpenAqRequestParams.FROM.value: date_from,
-                  OpenAqRequestParams.TO.value: date_to}
-        return requests.get(OpenAqEndpoints.MEASUREMENTS.value,
-                            params=params).json()
 
     @staticmethod
     def get_field(source, field):
@@ -56,9 +63,9 @@ class AirQualityApi(AirQualityRepositoryInterface):
 
     @staticmethod
     def coordinates_json_to_list(json_coordinates):
-        latitud = json_coordinates.get(OpenAqDataFields.LATITUDE.value)
-        longitud = json_coordinates.get(OpenAqDataFields.LONGITUDE.value)
-        return [latitud, longitud]
+        latitude = json_coordinates.get(OpenAqDataFields.LATITUDE.value)
+        longitude = json_coordinates.get(OpenAqDataFields.LONGITUDE.value)
+        return [longitude, latitude]
 
     def to_geojson_feature(self, json):
         geojson = deepcopy(Skeletons.GEOJSONPOINT.value)

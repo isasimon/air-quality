@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class OpenAqRequestParams(Enum):
+    COUNTRY = 'country'
     CITY = 'city'
     FROM = 'date_from'
     TO = 'date_to'
@@ -28,21 +29,21 @@ class OpenAqDateFormat(Enum):
 
 class Skeletons(Enum):
     GEOJSONPARENT = {
-        "type": "FeatureCollection",
-        "features": []
+        'type': 'FeatureCollection',
+        'features': []
     }
     GEOJSONPOINT = {
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
+        'type': 'Feature',
+        'geometry': {
+            'type': 'Point',
         },
-        "properties": {
+        'properties': {
 
         }
     }
 
 
 class GeoJsonKeys(Enum):
-    FEATURES = "features"
-    PROPERTIES = "properties"
-    GEOMETRY = "geometry"
+    FEATURES = 'features'
+    PROPERTIES = 'properties'
+    GEOMETRY = 'geometry'

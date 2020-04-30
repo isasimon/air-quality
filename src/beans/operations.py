@@ -1,6 +1,6 @@
 from enum import Enum
-from .mappings import Mappings
-from .aggregations import Aggregations
+from services.operations.mappings import Mappings
+from services.operations.aggregations import Aggregations
 
 
 class OperationsBeans(Enum):
