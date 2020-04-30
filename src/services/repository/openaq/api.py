@@ -4,14 +4,15 @@ import requests
 from itertools import groupby
 from .endpoints import OpenAqEndpoints
 from .params import OpenAqRequestParams, OpenAqDataFields
-from .operations.aggregations import Aggregations
-from .operations.mappings import Mappings
+from ...operations.beans import OperationsBeans
 
 
 class AirQualityApi(AirQualityRepositoryInterface):
+    def __init__(self):
+        self.mappings = OperationsBeans.MAPPINGS.value
+        self.aggs = OperationsBeans.AGGREGATIONS.value
+
     def fetch_by_city(self, date_from, date_to, city):
-        aggs = Aggregations()
-        mappings = Mappings()
         result = []
         aq_raw = self.fetch_from_source(date_from, date_to, city)
         temp_data = self.get_field(aq_raw,
@@ -20,8 +21,8 @@ class AirQualityApi(AirQualityRepositoryInterface):
                          key=lambda d: d[OpenAqDataFields.COORDINATES.value])
         for x, y in groups:
             y_list = list(y)
-            mean = aggs.calculate_mean(y_list)
-            level = mappings.get_pollution_level(mean)
+            mean = self.aggs.calculate_mean(y_list)
+            level = self.mappings.get_pollution_level(mean)
             el = y_list.pop(0)
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
             self.insert_field(el, OpenAqDataFields.LEVEL.value, level)

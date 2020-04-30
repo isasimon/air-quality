@@ -1,5 +1,5 @@
 from functools import reduce
-from ..params import OpenAqDataFields
+from services.repository.openaq.params import OpenAqDataFields
 
 
 class Aggregations:
