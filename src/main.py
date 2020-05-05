@@ -15,7 +15,7 @@ def main():
     f = open("../data/openapiq-feb-berlin.geojson", "w")
     f.write(json.dumps(metrics, indent=2))
     f.close()
-    g = open("../data/openapiq-germany.geojson", "w")
+    g = open("../data/openapiq-germany-sehaliado-parda.geojson", "w")
     g.write(json.dumps(country_metrics, indent=2))
     g.close()
 
@@ -24,10 +24,8 @@ def s3_read():
     bucket = S3("openaq-fetches")
     files = bucket.get_object_list('realtime/2013-11-26/')
     [print(i.key) for i in files]
-    bucket.download_file('realtime/2013-11-26/2013-11-26.ndjson',
-                         'D:/aq/air-quality/data/history/test.ndjson')
 
 
 if __name__ == "__main__" :
-    s3_read()
-    #main()
+    #s3_read()
+    main()

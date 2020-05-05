@@ -3,7 +3,7 @@ from interfaces.air_quality_repository_interface \
 import requests
 from copy import deepcopy
 from itertools import groupby
-from ..endpoints import OpenAqEndpoints
+from services.repository.api.endpoints import OpenAqEndpoints
 from .params import OpenAqRequestParams, OpenAqDataFields, \
     Skeletons, GeoJsonKeys
 from beans.operations import OperationsBeans
