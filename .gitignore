@@ -1,12 +1,4 @@
-.idea
-src/__pycache__/
-src/interfaces/__pycache__
-src/services/__pycache__
-src/services/repository/__pycache__
-src/services/repository/api/openaq/__pycache__
-src/services/repository/s3/__pycache__
-src/services/transformation/__pycache__
-src/usecases/__pycache__
-venv
-data
+.idea/
+data/
 token
+**/__pycache__
