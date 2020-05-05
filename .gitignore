@@ -8,3 +8,4 @@ src/services/transformation/__pycache__
 src/usecases/__pycache__
 venv
 data
+token

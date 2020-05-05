@@ -1,6 +1,7 @@
 from usecases.get_city_air_quality import GetCityAirQuality
 from usecases.get_country_air_quality import GetCountryAirQuality
 from beans.repository import RepositoryBeans
+from services.repository.s3.adapter import S3
 import json
 
 
@@ -19,5 +20,14 @@ def main():
     g.close()
 
 
+def s3_read():
+    bucket = S3("openaq-fetches")
+    files = bucket.get_object_list('realtime/2013-11-26/')
+    [print(i.key) for i in files]
+    bucket.download_file('realtime/2013-11-26/2013-11-26.ndjson',
+                         'D:/aq/air-quality/data/history/test.ndjson')
+
+
 if __name__ == "__main__" :
-    main()
+    s3_read()
+    #main()
