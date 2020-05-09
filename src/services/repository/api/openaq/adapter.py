@@ -4,8 +4,9 @@ import requests
 from copy import deepcopy
 from itertools import groupby
 from services.repository.api.endpoints import OpenAqEndpoints
-from .params import OpenAqRequestParams, OpenAqDataFields, \
+from .params import OpenAqDataFields, \
     Skeletons, GeoJsonKeys
+from ..common_params import RequestParams
 from beans.operations import OperationsBeans
 
 
@@ -15,22 +16,22 @@ class AirQualityApi(AirQualityRepositoryInterface):
         self.aggs = OperationsBeans.AGGREGATIONS.value
 
     def fetch_by_city(self, date_from, date_to, city):
-        params = {OpenAqRequestParams.CITY.value: city,
-                  OpenAqRequestParams.FROM.value: date_from,
-                  OpenAqRequestParams.TO.value: date_to}
+        params = {RequestParams.CITY.value: city,
+                  RequestParams.FROM.value: date_from,
+                  RequestParams.TO.value: date_to}
         raw_data = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
                                 params=params).json()
-        return self.generate_geojson(raw_data)
+        return self.geojson(raw_data)
 
     def fetch_by_country(self, date_from, date_to, country):
-        params = {OpenAqRequestParams.COUNTRY.value: country,
-                  OpenAqRequestParams.FROM.value: date_from,
-                  OpenAqRequestParams.TO.value: date_to}
+        params = {RequestParams.COUNTRY.value: country,
+                  RequestParams.FROM.value: date_from,
+                  RequestParams.TO.value: date_to}
         raw_data = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
                                 params=params).json()
-        return self.generate_geojson(raw_data)
+        return self.geojson(raw_data)
 
-    def generate_geojson(self, raw_data):
+    def geojson(self, raw_data):
         result = deepcopy(Skeletons.GEOJSONPARENT.value)
         temp_data = self.get_field(raw_data,
                                    OpenAqDataFields.RESULTS.value)
@@ -40,12 +41,10 @@ class AirQualityApi(AirQualityRepositoryInterface):
         for x, y in groups:
             y_list = list(y)
             mean = self.aggs.calculate_mean(y_list)
-            level = self.mappings.get_pollution_level(mean)
             el = y_list.pop(0)
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
-            self.insert_field(el, OpenAqDataFields.LEVEL.value, level)
             result.get(GeoJsonKeys.FEATURES.value) \
-                .append(self.to_geojson_feature(el))
+                .append(self.geojson_point(el))
         return result
 
     @staticmethod
@@ -67,7 +66,7 @@ class AirQualityApi(AirQualityRepositoryInterface):
         longitude = json_coordinates.get(OpenAqDataFields.LONGITUDE.value)
         return [longitude, latitude]
 
-    def to_geojson_feature(self, json):
+    def geojson_point(self, json):
         geojson = deepcopy(Skeletons.GEOJSONPOINT.value)
         coordinates_key = OpenAqDataFields.COORDINATES.value
         coordinates = self.coordinates_json_to_list(json.get(coordinates_key))
@@ -76,7 +75,4 @@ class AirQualityApi(AirQualityRepositoryInterface):
         self.insert_field(geojson.get(GeoJsonKeys.PROPERTIES.value),
                           json.get(OpenAqDataFields.PARAMETER.value),
                           json.get(OpenAqDataFields.MEAN.value))
-        self.insert_field(geojson.get(GeoJsonKeys.PROPERTIES.value),
-                          OpenAqDataFields.LEVEL.value,
-                          json.get(OpenAqDataFields.LEVEL.value))
         return geojson

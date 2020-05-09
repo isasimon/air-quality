@@ -1,13 +1,6 @@
 from enum import Enum
 
 
-class OpenAqRequestParams(Enum):
-    COUNTRY = 'country'
-    CITY = 'city'
-    FROM = 'date_from'
-    TO = 'date_to'
-
-
 class OpenAqDataFields(Enum):
     RESULTS = 'results'
     PARAMETER = 'parameter'
