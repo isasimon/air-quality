@@ -24,3 +24,7 @@ def city():
     metrics = get_city_aq.get_city_air_quality(date_from,
                                                date_to, city)
     return json.dumps(metrics, indent=2)
+
+
+if __name__ == '__main__':
+    app.run()
