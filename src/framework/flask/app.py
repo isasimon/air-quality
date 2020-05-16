@@ -9,6 +9,11 @@ from services.repository.api.common_params import RequestParams
 app = Flask(__name__)
 
 
+@app.route('/', methods=['GET'])
+def welcome():
+    return 'Welcome!'
+
+
 @app.route('/city', methods=['POST'])
 def city():
     date_from = request.args.get(RequestParams.FROM.value, '')
