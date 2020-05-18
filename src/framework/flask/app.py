@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def welcome():
-    return 'Welcome!'
+    return '{\'ping\':\'pong\'}'
 
 
 @app.route('/city', methods=['POST'])

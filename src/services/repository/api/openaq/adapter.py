@@ -46,7 +46,6 @@ class AirQualityApi(AirQualityRepositoryInterface):
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
             result.get(GeoJsonKeys.FEATURES.value) \
                 .append(self.geojson_point(el))
-        print(result)
         return result
 
     @staticmethod
