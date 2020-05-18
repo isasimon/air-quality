@@ -2,12 +2,12 @@ from interfaces.air_quality_repository_interface \
     import AirQualityRepositoryInterface
 import requests
 from datetime import datetime
+from calendar import monthrange
 from copy import deepcopy
 from itertools import groupby
 from services.repository.api.endpoints import OpenAqEndpoints
-from .params import OpenAqDataFields, OpenAqDateFormat, \
-    Skeletons, GeoJsonKeys
-from ..common_params import RequestParams
+from .params import OpenAqDataFields, OpenAqDateFormat
+from ..common_params import RequestParams, GeoJsonKeys, Skeletons
 from beans.operations import OperationsBeans
 
 
@@ -23,6 +23,16 @@ class AirQualityApi(AirQualityRepositoryInterface):
         raw_data = requests.get(OpenAqEndpoints.MEASUREMENTS.value,
                                 params=params).json()
         return self.geojson(raw_data)
+
+    def fetch_by_city_month(self, month, year, city):
+        month = int(month)
+        year = int(year)
+        date_from = datetime(year, month, 1)\
+            .strftime(OpenAqDateFormat.DATE_FROM.value)
+        last_month_day = monthrange(year, month)[1]
+        date_to = datetime(year, month, last_month_day)\
+            .strftime(OpenAqDateFormat.DATE_TO.value)
+        return self.fetch_by_city(date_from, date_to, city)
 
     def fetch_by_country(self, date_from, date_to, country):
         params = {RequestParams.COUNTRY.value: country,

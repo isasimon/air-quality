@@ -23,23 +23,4 @@ class OpenAqDateFormat(Enum):
     FINAL_RESULT = '%Y-%m-%d'
 
 
-class Skeletons(Enum):
-    GEOJSONPARENT = {
-        'type': 'FeatureCollection',
-        'features': []
-    }
-    GEOJSONPOINT = {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-        },
-        'properties': {
 
-        }
-    }
-
-
-class GeoJsonKeys(Enum):
-    FEATURES = 'features'
-    PROPERTIES = 'properties'
-    GEOMETRY = 'geometry'

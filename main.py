@@ -1,21 +1,19 @@
 from beans.repository import RepositoryBeans
-from usecases.get_city_air_quality import GetCityAirQuality
+from usecases.get_city_month_air_quality import GetCityMonthAirQuality
 
 
 def main():
-    date_from = '2020-03-03'
-    date_to = '2020-03-04'
+    month = 3
+    year = 2020
     city = 'Madrid'
     repo = RepositoryBeans.API.value
-    get_city_aq = GetCityAirQuality(repo)
-    metrics = get_city_aq.get_city_air_quality(date_from,
-                                               date_to, city)
+    get_city_month_aq = GetCityMonthAirQuality(repo)
+    metrics = get_city_month_aq.get_city_month_air_quality(month, year, city)
     print(metrics)
 
 
 if __name__ == '__main__':
     main()
-
 
 
 """def s3_read():
