@@ -1,10 +1,11 @@
 from interfaces.air_quality_repository_interface \
     import AirQualityRepositoryInterface
 import requests
+from datetime import datetime
 from copy import deepcopy
 from itertools import groupby
 from services.repository.api.endpoints import OpenAqEndpoints
-from .params import OpenAqDataFields, \
+from .params import OpenAqDataFields, OpenAqDateFormat, \
     Skeletons, GeoJsonKeys
 from ..common_params import RequestParams
 from beans.operations import OperationsBeans
@@ -45,6 +46,7 @@ class AirQualityApi(AirQualityRepositoryInterface):
             self.insert_field(el, OpenAqDataFields.MEAN.value, mean)
             result.get(GeoJsonKeys.FEATURES.value) \
                 .append(self.geojson_point(el))
+        print(result)
         return result
 
     @staticmethod
@@ -70,9 +72,18 @@ class AirQualityApi(AirQualityRepositoryInterface):
         geojson = deepcopy(Skeletons.GEOJSONPOINT.value)
         coordinates_key = OpenAqDataFields.COORDINATES.value
         coordinates = self.coordinates_json_to_list(json.get(coordinates_key))
+        mean = json.get(OpenAqDataFields.MEAN.value)
+        parameter = json.get(OpenAqDataFields.PARAMETER.value)
+        date_key = OpenAqDataFields.DATE.value
+        date = datetime.strptime(json.get(date_key)
+                                 .get(OpenAqDataFields.UTC.value),
+                                 OpenAqDateFormat.RESPONSE.value)
         self.insert_field(geojson.get(GeoJsonKeys.GEOMETRY.value),
                           coordinates_key, coordinates)
         self.insert_field(geojson.get(GeoJsonKeys.PROPERTIES.value),
-                          json.get(OpenAqDataFields.PARAMETER.value),
-                          json.get(OpenAqDataFields.MEAN.value))
+                          parameter,
+                          mean)
+        self.insert_field(geojson.get(GeoJsonKeys.PROPERTIES.value),
+                          date_key,
+                          date.strftime(OpenAqDateFormat.FINAL_RESULT.value))
         return geojson

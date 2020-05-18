@@ -5,6 +5,7 @@ class OpenAqDataFields(Enum):
     RESULTS = 'results'
     PARAMETER = 'parameter'
     DATE = 'date'
+    UTC = 'utc'
     CITY = 'city'
     VALUE = 'value'
     COORDINATES = 'coordinates'
@@ -18,6 +19,8 @@ class OpenAqDataFields(Enum):
 class OpenAqDateFormat(Enum):
     DATE_TO = '%Y-%m-%d'
     DATE_FROM = '%Y-%m-%d'
+    RESPONSE = '%Y-%m-%dT%H:%M:%S.%fZ'
+    FINAL_RESULT = '%Y-%m-%d'
 
 
 class Skeletons(Enum):
