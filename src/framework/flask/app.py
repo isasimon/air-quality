@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import request
 import json
 
@@ -7,7 +8,7 @@ from beans.repository import RepositoryBeans
 from services.repository.api.common_params import RequestParams
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def welcome():
