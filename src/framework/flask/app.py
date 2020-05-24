@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import request
 import json
 
@@ -10,7 +11,7 @@ from datetime import datetime, timedelta
 from calendar import monthrange
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def welcome():
