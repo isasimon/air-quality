@@ -1,9 +1,11 @@
 from interfaces.air_quality_repository_interface \
     import AirQualityRepositoryInterface
+from ..params import S3Params
 import boto3
+from os import sep
 
 
-class S3(AirQualityRepositoryInterface):
+class OpenaqS3(AirQualityRepositoryInterface):
     def __init__(self, bucket_name):
         aws_key_id = "AKIAXK5MI4A3DS7SBIFT"
         aws_secret_id = "D7EgiB6o5RDvV7rNWBdtcmhcPC1HBKoBrgWCz6KI"
@@ -12,13 +14,10 @@ class S3(AirQualityRepositoryInterface):
         self.bucket = s3r.Bucket(bucket_name)
 
     def fetch_by_city(self, date_from, date_to, city):
-        pass
+        files = self.bucket.get_object_list(S3Params.realtime_objects_folder
+                                            + sep + date_from + sep)
+        [print(i.key) for i in files]
+        return files
 
     def fetch_by_country(self, date_from, date_to, city):
         pass
-
-    def generate_geojson(self, raw_data):
-        pass
-
-    def get_object_list(self, obj):
-        return self.bucket.objects.filter(Prefix=obj)
