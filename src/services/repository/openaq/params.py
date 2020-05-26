@@ -58,8 +58,10 @@ class DateFormat(Enum):
 
 
 class S3Params(Enum):
-    bucket_name = "api-fetches"
+    bucket_name = 'openaq-fetches'
     realtime_objects_folder = 'realtime'
+    aws_key_id = 'AKIAXK5MI4A3DS7SBIF'
+    aws_secret_id = 'D7EgiB6o5RDvV7rNWBdtcmhcPC1HBKoBrgWCz6KI'
 
 
 

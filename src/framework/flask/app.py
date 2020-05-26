@@ -13,6 +13,7 @@ from calendar import monthrange
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/', methods=['GET'])
 def welcome():
     return '{ ping: pong }'
