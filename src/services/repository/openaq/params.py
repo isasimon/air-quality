@@ -60,6 +60,9 @@ class DateFormat(Enum):
 class S3Params(Enum):
     bucket_name = 'openaq-fetches'
     realtime_objects_folder = 'realtime'
+    data_format = '.ndjson'
+    realtime_data_body = 'Body'
+    path_sep = '/'
     aws_key_id = 'AKIAXK5MI4A3DS7SBIFT'
     aws_secret_id = 'D7EgiB6o5RDvV7rNWBdtcmhcPC1HBKoBrgWCz6KI'
 

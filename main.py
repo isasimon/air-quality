@@ -7,9 +7,11 @@ from datetime import datetime
 
 
 def main():
-    month = 12
-    year = 2019
-    city = 'Madrid'
+    month = 11
+    year = 2013
+    #month = 5
+    #year = 2020
+    city = 'Beijing'
     first_request_day, last_request_day = get_date_boundaries(year,
                                                               month)
     last_api_month, last_api_year = get_last_api_date(datetime
@@ -30,9 +32,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-"""def s3_read():
-    bucket = S3("api-fetches")
-    files = bucket.get_object_list('realtime/2013-11-26/')
-    [print(i.key) for i in files]"""

@@ -13,9 +13,7 @@ class GeaojsonTreatment:
 
     def geojson(self, raw_data):
         result = deepcopy(Skeletons.GEOJSONPARENT.value)
-        temp_data = self.get_field(raw_data,
-                                   DataFields.RESULTS.value)
-        groups = groupby(temp_data,
+        groups = groupby(raw_data,
                          key=lambda d: (d[DataFields.COORDINATES.value],
                                         d[DataFields.PARAMETER.value]))
         for x, y in groups:
