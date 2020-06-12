@@ -7,10 +7,10 @@ from datetime import datetime
 
 
 def main():
-    month = 11
-    year = 2013
-    #month = 5
-    #year = 2020
+    #month = 11
+    #year = 2013
+    month = 6
+    year = 2020
     city = 'Beijing'
     first_request_day, last_request_day = get_date_boundaries(year,
                                                               month)

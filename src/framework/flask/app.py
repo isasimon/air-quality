@@ -44,8 +44,13 @@ def city():
 
 def get_date_boundaries(year, month):
     first, last = monthrange(year, month)
-    return (datetime(year, month, first),
-            datetime(year, month, last))
+    try:
+        return (datetime(year, month, first + 1),
+                datetime(year, month, last))
+    except:
+        today = datetime.today()
+        return (datetime(year, month, first + 1),
+                datetime(today.year, today.month, today.day))
 
 
 def get_last_api_date(end_date):
